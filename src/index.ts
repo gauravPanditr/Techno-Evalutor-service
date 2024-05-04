@@ -1,26 +1,17 @@
 import express from "express";
+import bodyParser from "body-parser"
 import serverConfig from "./config/serverConfig";
-import sameQueueproducer from "./producer/sameQueueproducer";
-import SampleWorker from "./workers/Sampleworker";
+
 
 const app = express();
+
+app.use(bodyParser.urlencoded());
+app.use(bodyParser.json());
+app.use(bodyParser.text());
 
 app.listen(serverConfig.PORT || 3000, () => {
     console.log(`Server started at port ${serverConfig.PORT || 3000}`);
     
-    SampleWorker('SampleQueue');
-    sameQueueproducer('SampleJob',{
-       name:"Navya",
-       company:"Google",
-       position:"SDE1" ,
-
-    },1);
-    sameQueueproducer('SampleJob',{
-        name:"Gaurav",
-        company:"TCS",
-        position:"SDE1" ,
-
-     },2)
-     
+ 
     
 });
