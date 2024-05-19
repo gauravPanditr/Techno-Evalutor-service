@@ -1,6 +1,5 @@
 import { Job, Worker } from "bullmq";
-import { IJob } from "../types/bullMqJobDefination";
-import { WorkerResponse } from "../types/bullMqWorkerResponse";
+
 import SampleJob from "../jobs/SampleJob";
 import redisConnection from "../config/redisConfig";
 
