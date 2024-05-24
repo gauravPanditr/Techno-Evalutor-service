@@ -2,23 +2,24 @@
 import decodeDockerStream from './dockerhelper';
 import createContainer from './containerFactory';
 //import { TestCases } from '../types/testCases';
-import { PYTHON_IMAGE } from '../utilis/constants';
+import { CPP_IMAGE } from '../utilis/constants';
 import pullImage from './pullImage';
 
-async function runPython(code:string,inputTestCase:string) {
+
+async function runCpp(code:string,inputTestCase:string) {
     const rawLogBuffer:Buffer[]=[];
-    await pullImage(PYTHON_IMAGE);
-    const runCommand = `echo '${code.replace(/'/g, `'\\"`)}' > test.py && echo '${inputTestCase.replace(/'/g, `'\\"`)}' | python3 test.py`;
-    const pythonDockerContainer = await createContainer(PYTHON_IMAGE, [
+    await pullImage(CPP_IMAGE);
+    const runCommand = `echo '${code.replace(/'/g, `'\\"`)}' > main.cpp && g++ main.cpp -o main  && echo '${inputTestCase.replace(/'/g, `'\\"`)}' | ./main`;
+    const cppDockerContainer = await createContainer(CPP_IMAGE, [
         '/bin/sh', 
         '-c',
         runCommand
     ]); 
     console.log("Initalizing new Docker");
     
-   await pythonDockerContainer.start();
+   await cppDockerContainer.start();
      
-  const loggerStream= await pythonDockerContainer.logs({
+  const loggerStream= await cppDockerContainer.logs({
       stdout:true,
       stderr:true,
       timestamps:false,
@@ -39,11 +40,11 @@ async function runPython(code:string,inputTestCase:string) {
     });
 });
 
-// remove the container when done with it
-await pythonDockerContainer.remove();
+
+await cppDockerContainer.remove();
 
    
 
-    return pythonDockerContainer;  
+    return cppDockerContainer;  
 }
-export default runPython;
+export default runCpp;
