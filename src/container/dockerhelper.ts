@@ -10,9 +10,9 @@ export default function decodeDockerStream(buffer: Buffer): DockerStreamOutput {
     offset += DOCKER_STREAM_HEADER_SIZE;
     const length = buffer.readUInt32BE(offset + 4);
 
-    if (typesOfStream == 1) {
+    if (typesOfStream === 1) {
       output.stdout += buffer.toString("utf-8", offset, offset + length);
-    } else if (typesOfStream == 2) {
+    } else if (typesOfStream === 2) {
       output.stdout += buffer.toString("utf-8", offset, offset + length);
     }
     
